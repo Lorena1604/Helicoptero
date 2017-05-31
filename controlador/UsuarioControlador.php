@@ -12,14 +12,14 @@ try {
         if (empty($usuario)) {
              $mensaje = 'El usuario no se pudo registrar';
         }else{
-            $mensaje = 'El usuario se creo correctamente';
+            $mensaje = 'El usuario se registro correctamente';
         }
         
-        header("Location:../vista/formulariousuarioprueba.php?mensaje= " . $mensaje);
+        header("Location:../vista/protegido/registrarusuario.php?mensaje= " . $mensaje);
     }
 } catch (Exception $e) {
     $mensaje = 'Error: ' . $e->getMessage();
-    header("Location:../vista/formulariousuarioprueba.php?mensaje= " . $mensaje);
+    header("Location:../vista/protegido/registrarusuario.php?mensaje= " . $mensaje);
 }
 
 function listarUsuarios() {

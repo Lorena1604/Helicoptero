@@ -1,26 +1,26 @@
-<?php $title = "Registrar Usuarios"; ?>
+<?php $title = "Registrar Usuario"; ?>
 <?php include_once '../plantillas/head.php'; ?>
 <?php include_once '../plantillas/nav.php'; ?>
-<h4 class="title">REGISTRAR USUARIOS</h4>
+<h4 class="title">REGISTRAR USUARIO</h4>
 </div>
 <hr/>
 <div class="content">
     <?php
     if (isset($_GET['mensaje'])) {
-        echo '<h4>' . $mensaje = $_GET['mensaje'] . '</h4>';
+        echo '<div class="alert alert-info" style="color:#000">' . $mensaje = $_GET['mensaje'] . '</div>';
     }
     ?>
-    <form action="../../../controlador/UsuarioControlador.php" method="post" class="form-horizontal">
+    <form action="../../controlador/UsuarioControlador.php" method="post" class="form-horizontal">
         <fieldset>
             <div class="col-md-1"></div>
             <div class="col-md-5">
 
-                <div class="form-group" title="Ingresar numero de cedula">
+                <div class="form-group" title="Ingresar número de cédula">
                     <span class="col-md-2 text-center">
                         <i class="fa fa-sort-numeric-asc iconColor"></i>
                     </span>
                     <div class="col-md-10">
-                        <input required="" id="cedula" name="cedula" type="number" placeholder="* Numero de cedula" class="form-control">
+                        <input required="" id="cedula" name="cedula" type="number" placeholder="* Número de cédula" class="form-control">
                     </div>
                 </div>
 
@@ -45,7 +45,7 @@
                         <i class="fa fa-phone-square iconColor"></i>
                     </span>
                     <div class="col-md-10">
-                        <input required="" id="telefono" type="number" name="telefono" placeholder="* Numero de telefono" class="form-control">
+                        <input required="" id="telefono" type="number" name="telefono" placeholder="* Número de teléfono" class="form-control">
                     </div>
                 </div>
 
@@ -54,7 +54,7 @@
                         <i class="fa fa-home iconColor"></i>
                     </span>
                     <div class="col-md-10">
-                        <input required="" id="direccion" type="text" name="direccion" placeholder="* Dirección de la casa" class="form-control">
+                        <input required="" id="direccion" type="text" name="direccion" placeholder="* Dirección" class="form-control">
                     </div>
                 </div>
 
@@ -86,17 +86,26 @@
                         <input required="" id="genero" type="text" name="genero" placeholder="* Genero" class="form-control">
                     </div>
                 </div>
-
-                <div class="form-group" title="Ingresar genero">
+                
+                <div class="form-group" title="Ingresar estado">
                     <span class="col-md-2 text-center">
-                        <i class="fa fa-spinner iconColor"></i>
+                        <i class="fa fa-child iconColor"></i>
+                    </span>
+                    <div class="col-md-10">
+                        <input required="" id="estado" type="text" name="estado" placeholder="* Estado" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group" title="Ingresar contrasena">
+                    <span class="col-md-2 text-center">
+                        <i class="fa fa-unlock-alt iconColor"></i>
                     </span>
                     <div class="col-md-10">
                         <input required="" id="contrasena" type="password" name="contrasena" placeholder="* Contraseña" class="form-control">
                     </div>
                 </div>
 
-                <div class="form-group" title="Ingresar genero">
+                <div class="form-group">
                     <span class="col-md-2 text-center"></span>
                     <div class="col-md-10">
                         <input type="submit" value="REGISTRAR" name="btnRegistrar" class="btn btn-warning btn-block">

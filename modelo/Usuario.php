@@ -60,43 +60,19 @@ class Usuario {
             $sentencia->execute();
             return $this->bd->lastInsertId();
             
-        } catch (Exception $e) {
+        } catch (PDOException $e) {
             $mensaje = "Ocurrio el siguiente error " . $e->getMessage();
-            header("Location:../vista/formulariousuarioprueba.php?mensaje=" . $mensaje);
+            header("Location:../vista/protegido/registrarusuario.php?mensaje= " . $mensaje);
         }
     }
 
-    /*public function registrarUsuario($cedula, $nombre, $apellido, $genero, $direccion, $rol, $profesion, $email, $contrasenia, $localidad, $fecha) {
-        $db = DB();
-        $mensaje = "";
-        try {
-            $q = $db->prepare("INSERT INTO Usuarios (Cedula,Nombres,Apellidos,Genero,Direccion,CodRol,CodTitulo,Correo,Contrasenia,Localidad,FechaNacimiento) VALUES (:cedula,:nombre,:apellido,:genero,:direccion,:codrol,:codtitulo,:correo,:contrasenia,:localidad,:fecha);");
-            $q->bindParam("cedula", $cedula, PDO::PARAM_INT);
-            $q->bindParam("nombre", $nombre, PDO::PARAM_STR);
-            $q->bindParam("apellido", $apellido, PDO::PARAM_STR);
-            $q->bindParam("genero", $genero, PDO::PARAM_STR);
-            $q->bindParam("direccion", $direccion, PDO::PARAM_STR);
-            $q->bindParam("codrol", $rol, PDO::PARAM_INT);
-            $q->bindParam("codtitulo", $profesion, PDO::PARAM_INT);
-            $q->bindParam("correo", $email, PDO::PARAM_STR);
-            $q->bindParam("contrasenia", $contrasenia, PDO::PARAM_STR);
-            $q->bindParam("localidad", $localidad, PDO::PARAM_STR);
-            $q->bindParam("fecha", $fecha, PDO::PARAM_STR);
-            $q->execute();
-            return $db->lastInsertId();
-        } catch (Exception $ex) {
-            $mensaje = "Ocurrio un error al agregar un nuevo usuario a la base de datos" . $ex->getMessage();
-            header("Location: ../../registro.php?mensaje=" . $mensaje);
-        }
-    }*/
-
-    public function eliminarUsuario($usuario) {
+    public function eliminarUsuario($id) {
         try {
             $sql = "DELETE FROM usuarios WHERE idUsuario=?";
-            $sentencia = $this->db->prepare($sql);
-            $sentencia->execute(array($usuario->get("idUsuario")));
-            $sentencia->closeCursor();
-        } catch (Exception $e) {
+            $sentencia = $this->bd->prepare($sql);
+            $sentencia->bindColumn(1, $id);
+            $sentencia->execute();
+        } catch (PDOException $e) {
             echo "Error " . $e->getMessage();
         }
     }
