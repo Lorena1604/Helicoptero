@@ -18,8 +18,9 @@
                 </tr>
             </thead>
             <?php 
-            include '../../controlador/UsuarioControlador.php';
-            foreach (listarUsuarios() as $lista);
+            require_once '../../controlador/ListasControlador.php';
+            
+            foreach (listarUsuarios() as $lista){
             ?>
             <tbody>
                 <tr>
@@ -28,6 +29,7 @@
                     <td>john@example.com</td>
                 </tr>
             </tbody>
+            <?php } ?>
         </table>
     </center>
     <div class="footer">

@@ -1,8 +1,7 @@
-<?php $title = "Registrar Usuario"; ?>
-<?php include_once '../plantillas/head.php'; ?>
-<?php include_once '../plantillas/nav.php'; ?>
+<?php $title = "Registrar Usuario";
+include_once '../plantillas/head.php';
+include_once '../plantillas/nav.php'; ?>
 <h4 class="title">REGISTRAR USUARIO</h4>
-</div>
 <hr/>
 <div class="content">
     <?php

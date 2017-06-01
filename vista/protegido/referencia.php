@@ -1,5 +1,5 @@
-<?php include_once '../plantillas/head.php'; ?>
-<?php include_once '../plantillas/nav.php'; ?>
+<?php include_once '../plantillas/head.php';
+ include_once '../plantillas/nav.php'; ?>
 <h4 class="title">TITULO</h4>
 <div class="stats">
     <i class="fa fa-clock-o"></i> Campaña envió hace 2 días
