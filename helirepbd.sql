@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `helirepbd` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `helirepbd`;
--- MySQL dump 10.13  Distrib 5.7.12, for Win32 (AMD64)
+-- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: helirepbd
 -- ------------------------------------------------------
--- Server version	5.6.26
+-- Server version	5.5.5-10.1.9-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,35 +16,6 @@ USE `helirepbd`;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `detallesolicitudes`
---
-
-DROP TABLE IF EXISTS `detallesolicitudes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `detallesolicitudes` (
-  `idDetalleSolicitud` int(11) NOT NULL AUTO_INCREMENT,
-  `solicitud` int(11) NOT NULL,
-  `suministro` int(11) NOT NULL,
-  `cantidad` int(11) NOT NULL,
-  PRIMARY KEY (`idDetalleSolicitud`),
-  KEY `detalleSuministro_idx` (`suministro`),
-  KEY `detalleSolicitud_idx` (`solicitud`),
-  CONSTRAINT `detalleSolicitud` FOREIGN KEY (`solicitud`) REFERENCES `solicitudes` (`idSolicitud`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `detalleSuministro` FOREIGN KEY (`suministro`) REFERENCES `suministros` (`idSuministro`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `detallesolicitudes`
---
-
-LOCK TABLES `detallesolicitudes` WRITE;
-/*!40000 ALTER TABLE `detallesolicitudes` DISABLE KEYS */;
-/*!40000 ALTER TABLE `detallesolicitudes` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `entregas`
@@ -84,15 +55,14 @@ DROP TABLE IF EXISTS `helicopteros`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `helicopteros` (
-  `idHelicoptero` int(11) NOT NULL,
+  `idHelicoptero` int(11) NOT NULL AUTO_INCREMENT,
   `modelo` int(11) NOT NULL,
   `peso` int(11) NOT NULL,
   `capacidad` int(11) NOT NULL,
   `carretaje` enum('Si','No') NOT NULL,
   PRIMARY KEY (`idHelicoptero`),
-  KEY `helicopteroModelo_idx` (`modelo`),
-  CONSTRAINT `helicopteroModelo` FOREIGN KEY (`modelo`) REFERENCES `modeloshelicoptero` (`idModeloHelicoptero`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `helicopteroModelo_idx` (`modelo`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -101,6 +71,7 @@ CREATE TABLE `helicopteros` (
 
 LOCK TABLES `helicopteros` WRITE;
 /*!40000 ALTER TABLE `helicopteros` DISABLE KEYS */;
+INSERT INTO `helicopteros` VALUES (1,1,0,20,'Si');
 /*!40000 ALTER TABLE `helicopteros` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,9 +87,9 @@ CREATE TABLE `modeloshelicoptero` (
   `modelo` varchar(45) NOT NULL,
   `tipoHelicoptero` int(11) NOT NULL,
   PRIMARY KEY (`idModeloHelicoptero`),
-  KEY `modeloTipo_idx` (`tipoHelicoptero`),
-  CONSTRAINT `modeloTipo` FOREIGN KEY (`tipoHelicoptero`) REFERENCES `tipohelicopteros` (`idTipoHelicoptero`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `modelosTipoHelicoptero_idx` (`tipoHelicoptero`),
+  CONSTRAINT `modelosTipoHelicoptero` FOREIGN KEY (`tipoHelicoptero`) REFERENCES `tipohelicopteros` (`idTipoHelicoptero`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,6 +98,7 @@ CREATE TABLE `modeloshelicoptero` (
 
 LOCK TABLES `modeloshelicoptero` WRITE;
 /*!40000 ALTER TABLE `modeloshelicoptero` DISABLE KEYS */;
+INSERT INTO `modeloshelicoptero` VALUES (3,'mdl',1);
 /*!40000 ALTER TABLE `modeloshelicoptero` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,6 +175,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+INSERT INTO `roles` VALUES (1,'Jefe');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -247,14 +220,17 @@ CREATE TABLE `solicitudes` (
   `fechaSolicitud` date NOT NULL,
   `estadoSolicitud` enum('Aprobado','Rechazado','Pendiente','Entregado','Finalizado') NOT NULL,
   `fechaRevision` datetime DEFAULT NULL,
+  `cantidad` int(11) NOT NULL,
+  `suministro` int(11) NOT NULL,
   PRIMARY KEY (`idSolicitud`),
   KEY `usuarioSolicitud_idx` (`usuario`),
-  KEY `helicopteroSolicitud_idx` (`helicoptero`),
   KEY `tiposSolicitud_idx` (`tipoSolicitud`),
+  KEY `helicopteroSolicitud_idx` (`helicoptero`),
+  KEY `suministroSolicitud_idx` (`suministro`),
   CONSTRAINT `helicopteroSolicitud` FOREIGN KEY (`helicoptero`) REFERENCES `helicopteros` (`idHelicoptero`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `tiposSolicitud` FOREIGN KEY (`tipoSolicitud`) REFERENCES `tipossolicitud` (`idTipoSolicitud`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `usuarioSolicitud` FOREIGN KEY (`usuario`) REFERENCES `usuarios` (`idusuario`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -263,6 +239,7 @@ CREATE TABLE `solicitudes` (
 
 LOCK TABLES `solicitudes` WRITE;
 /*!40000 ALTER TABLE `solicitudes` DISABLE KEYS */;
+INSERT INTO `solicitudes` VALUES (4,1,1,1,'2017-04-02','Pendiente',NULL,0,0),(5,1,1,1,'2017-05-31','Pendiente',NULL,0,0),(6,2,1,1,'2017-05-30','Pendiente',NULL,0,0);
 /*!40000 ALTER TABLE `solicitudes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -301,10 +278,10 @@ DROP TABLE IF EXISTS `tipohelicopteros`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tipohelicopteros` (
-  `idTipoHelicoptero` int(11) NOT NULL,
+  `idTipoHelicoptero` int(11) NOT NULL AUTO_INCREMENT,
   `tipo` varchar(45) NOT NULL,
   PRIMARY KEY (`idTipoHelicoptero`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -313,6 +290,7 @@ CREATE TABLE `tipohelicopteros` (
 
 LOCK TABLES `tipohelicopteros` WRITE;
 /*!40000 ALTER TABLE `tipohelicopteros` DISABLE KEYS */;
+INSERT INTO `tipohelicopteros` VALUES (1,'ej');
 /*!40000 ALTER TABLE `tipohelicopteros` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -327,7 +305,7 @@ CREATE TABLE `tipossolicitud` (
   `idTipoSolicitud` int(11) NOT NULL AUTO_INCREMENT,
   `tipo` varchar(45) NOT NULL,
   PRIMARY KEY (`idTipoSolicitud`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -336,6 +314,7 @@ CREATE TABLE `tipossolicitud` (
 
 LOCK TABLES `tipossolicitud` WRITE;
 /*!40000 ALTER TABLE `tipossolicitud` DISABLE KEYS */;
+INSERT INTO `tipossolicitud` VALUES (1,'reparación');
 /*!40000 ALTER TABLE `tipossolicitud` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -362,7 +341,7 @@ CREATE TABLE `usuarios` (
   UNIQUE KEY `cedula_UNIQUE` (`cedula`),
   KEY `usuarioRol_idx` (`rol`),
   CONSTRAINT `usuarioRol` FOREIGN KEY (`rol`) REFERENCES `roles` (`idRol`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -371,6 +350,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
+INSERT INTO `usuarios` VALUES (1,1,78978,'Catalina','Perez',6587412,'Calle 26 N° 25 - 10','1992-12-06','Femenino','32123','Activo'),(2,1,123123,'Leonardo','Gomez',3115387403,'Calle 26 N° 25 - 10','1980-06-06','Masculino','4654','Activo'),(3,1,1023013382,'Mario ','Camargo',3118601634,'Cra 113 N° 139 - 69','1996-06-12','Masculino','21232','Activo'),(4,1,79789,'yuiy','yuiuy',6521458,'Calle 26 N° 25 - 10','1882-06-06','Femenino','1231231','Activo'),(5,1,213113233,'Gabriela','Gonzales',5214521,'Calle 26 N° 25 - 10','2017-05-02','Femenino','1233415','Activo'),(6,1,32321321,'jkl','jkl',3652587,'Calle 26 N° 25 - 10','1975-05-23','Masculino','jkl','Activo'),(8,1,12345,'fghfg','vbn',3125012369,'Calle 26 N° 25 - 10','1974-05-07','Femenino','212','Activo');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -391,4 +371,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-27  8:30:44
+-- Dump completed on 2017-05-31 21:49:40

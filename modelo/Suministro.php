@@ -1,23 +1,26 @@
 <?php
 
-class Suministro{
+class Suministro {
 
-private $idSuministro;
-private $material;
-private $cantidad;
-private $proveedor;
+    private $idSuministro;
+    private $material;
+    private $cantidad;
+    private $proveedor;
+    private $bd;
 
-public function __construct($material, $cantidad, $proveedor){
-$this->material = $material;
-$this->cantidad = $cantidad;
-$this->proveedor = $proveedor;
-}
+    public function __construct() {
+        $this->bd = new Conexion();
+        $this->bd = Conexion::conectarBd();
+    }
 
-public function get($atributo){
-return $this->$atributo;
-}
+    public function get($atributo) {
+        return $this->$atributo;
+    }
 
-public function set($atributo, $contenido){
-$this->$atributo = $contenido;
-}
+    public function set($atributo, $contenido) {
+        $this->$atributo = $contenido;
+    }
+    
+
+
 }

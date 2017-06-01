@@ -2,13 +2,12 @@
 
 require_once '../modelo/Usuario.php';
 
-
 try {
     if (isset($_POST['btnRegistrar'])) {
-        $usuario = new Usuario($_POST['cedula'], $_POST['nombres'], $_POST['apellidos'], 
+        $usuario = new Usuario();
+        $usuario->crearUsuario($_POST['cedula'], $_POST['nombres'], $_POST['apellidos'], 
                 $_POST['telefono'], $_POST['direccion'], $_POST['fechaNacimiento'], 
                 $_POST['genero'], $_POST['contrasena'], $_POST['rol'], $_POST['estado']);
-        $usuario->crearUsuario();
         if (empty($usuario)) {
              $mensaje = 'El usuario no se pudo registrar';
         }else{
@@ -24,7 +23,9 @@ try {
 
 function listarUsuarios() {
     try {
-        $this->uauario->listarUsuarios();
+        $usuario = new Usuario();
+        $lista = $usuario->listarUsuarios();
+        return $lista;
     } catch (Exception $e) {
         echo 'Error: ' . $e->getMessage();
     }
