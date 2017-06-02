@@ -1,7 +1,7 @@
-<?php $title = "Solicitar suministro"; ?>
+<?php $title = "Registrar suministro"; ?>
 <?php include_once '../plantillas/head.php'; ?>
 <?php include_once '../plantillas/nav.php'; ?>
-<h4 class="title">SOLICITAR SUMINISTRO</h4>
+<h4 class="title">REGISTRAR SUMINISTRO</h4>
 </div>
 <hr/>
 <div class="content">

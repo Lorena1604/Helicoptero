@@ -1,6 +1,21 @@
 <?php
 
-class Conexion {
+class Conexion extends mysqli{
+    
+    public function __construct() {
+        parent::__construct('localhost','root','','helirepbd');
+        $this->query("SET NAMES 'utf8';");
+        $this->connect_errno ? die('Error al conectar') : $x = 'Conectado';
+        unset($x);
+    }
+    
+    public function recorrer($y){
+        return mysqli_fetch_array($y);
+    }
+    
+    public function rows($y){
+        return mysqli_num_rows($y);
+    }
 
     public static function conectarBd() {
         try {
@@ -13,6 +28,8 @@ class Conexion {
         return $conectar;
         
     }
+    
+    
 
 }
 

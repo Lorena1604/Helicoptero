@@ -9,6 +9,9 @@ class Solicitud {
     private $fechaSolicitud;
     private $estadoSolicitud;
     private $fechaRevision;
+    private $suministro;
+    private $cantidad;
+    private $mensaje;
     private $bd;
 
     public function __construct() {
@@ -24,21 +27,22 @@ class Solicitud {
         $this->$atributo = $contenido;
     }
 
-    public function registrarSolicitud($usuario, $helicoptero, $tipoSolicitud, $fechaSolicitud, $estadoSolicitud) {
+    public function registrarSolicitud($usuario, $helicoptero, $tipoSolicitud, $fechaSolicitud, $estadoSolicitud, $cantidad, $suministro) {
 
         try {
-            $sql = "INSERT INTO solicitudes VALUES(null,?,?,?,?,?,null)";
+            $sql = "INSERT INTO solicitudes VALUES(null,?,?,?,?,?,null,?,?)";
             $sentencia = $this->bd->prepare($sql);
             $sentencia->bindParam(1, $usuario);
             $sentencia->bindParam(2, $helicoptero);
             $sentencia->bindParam(3, $tipoSolicitud);
             $sentencia->bindParam(4, $fechaSolicitud);
             $sentencia->bindParam(5, $estadoSolicitud);
+            $sentencia->bindParam(6, $cantidad);
+            $sentencia->bindParam(7, $suministro);
             $sentencia->execute();
-            return 1;
+            $this->mensaje = "El usuario se registro correctamente";
         } catch (PDOException $e) {
-            $mensaje = "Ocurrio el siguiente error " . $e->getMessage();
-            header("Location:../vista/protegido/registrarusuario.php?mensaje= " . $mensaje);
+            $this->mensaje = "Ocurrio el siguiente error " . $e->getMessage();
         }
     }
 
