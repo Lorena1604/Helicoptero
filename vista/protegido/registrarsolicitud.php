@@ -53,7 +53,7 @@
                         <i class="fa fa-child iconColor"></i>
                     </span>
                     <div class="col-md-10">
-                        <input required="" id="estadoSolicitud" type="text" name="suministro" placeholder="* Suministro" class="form-control">
+                        <input required="" id="suministro" type="text" name="suministro" placeholder="* Suministro" class="form-control">
                     </div>
                 </div>
                 <div class="form-group" title="Ingresar cantidad">
@@ -61,7 +61,7 @@
                         <i class="fa fa-child iconColor"></i>
                     </span>
                     <div class="col-md-10">
-                        <input required="" id="estadoSolicitud" type="text" name="cantidad" placeholder="* Cantidad" class="form-control">
+                        <input required="" id="cantidad" type="text" name="cantidad" placeholder="* Cantidad" class="form-control">
                     </div>
                 </div>
 

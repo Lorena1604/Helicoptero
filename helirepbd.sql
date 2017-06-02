@@ -61,8 +61,9 @@ CREATE TABLE `helicopteros` (
   `capacidad` int(11) NOT NULL,
   `carretaje` enum('Si','No') NOT NULL,
   PRIMARY KEY (`idHelicoptero`),
-  KEY `helicopteroModelo_idx` (`modelo`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  KEY `helicopteroModelo_idx` (`modelo`),
+  CONSTRAINT `helicopterosModelo` FOREIGN KEY (`modelo`) REFERENCES `modeloshelicoptero` (`idModeloHelicoptero`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -71,7 +72,7 @@ CREATE TABLE `helicopteros` (
 
 LOCK TABLES `helicopteros` WRITE;
 /*!40000 ALTER TABLE `helicopteros` DISABLE KEYS */;
-INSERT INTO `helicopteros` VALUES (1,1,0,20,'Si');
+INSERT INTO `helicopteros` VALUES (1,1,0,20,'Si'),(3,3,1700,2000,'Si'),(4,3,1700,2000,'Si'),(5,3,16000,20000,'No');
 /*!40000 ALTER TABLE `helicopteros` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -152,6 +153,7 @@ CREATE TABLE `proveedores` (
 
 LOCK TABLES `proveedores` WRITE;
 /*!40000 ALTER TABLE `proveedores` DISABLE KEYS */;
+INSERT INTO `proveedores` VALUES (1,5214789654,'BELL HELICOPTER 212','4884589 ','Cra 16a No. 79 – 02 Of. 602 Edificio Office Class ');
 /*!40000 ALTER TABLE `proveedores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -227,10 +229,12 @@ CREATE TABLE `solicitudes` (
   KEY `tiposSolicitud_idx` (`tipoSolicitud`),
   KEY `helicopteroSolicitud_idx` (`helicoptero`),
   KEY `suministroSolicitud_idx` (`suministro`),
+  KEY `suministroSolicitud1_idx` (`suministro`),
   CONSTRAINT `helicopteroSolicitud` FOREIGN KEY (`helicoptero`) REFERENCES `helicopteros` (`idHelicoptero`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `suministroSolicitud` FOREIGN KEY (`suministro`) REFERENCES `suministros` (`idSuministro`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `tiposSolicitud` FOREIGN KEY (`tipoSolicitud`) REFERENCES `tipossolicitud` (`idTipoSolicitud`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `usuarioSolicitud` FOREIGN KEY (`usuario`) REFERENCES `usuarios` (`idusuario`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -239,7 +243,7 @@ CREATE TABLE `solicitudes` (
 
 LOCK TABLES `solicitudes` WRITE;
 /*!40000 ALTER TABLE `solicitudes` DISABLE KEYS */;
-INSERT INTO `solicitudes` VALUES (4,1,1,1,'2017-04-02','Pendiente',NULL,0,0),(5,1,1,1,'2017-05-31','Pendiente',NULL,0,0),(6,2,1,1,'2017-05-30','Pendiente',NULL,0,0);
+INSERT INTO `solicitudes` VALUES (13,1,1,1,'2017-06-14','Pendiente',NULL,12,1),(14,1,1,1,'2017-06-20','Pendiente',NULL,23,1);
 /*!40000 ALTER TABLE `solicitudes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -251,14 +255,14 @@ DROP TABLE IF EXISTS `suministros`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `suministros` (
-  `idSuministro` int(11) NOT NULL,
+  `idSuministro` int(11) NOT NULL AUTO_INCREMENT,
   `material` varchar(45) NOT NULL,
   `cantidad` int(11) NOT NULL,
   `proveedor` int(11) NOT NULL,
   PRIMARY KEY (`idSuministro`),
   KEY `proveedores/suministros_idx` (`proveedor`),
   CONSTRAINT `proveedorSuministro` FOREIGN KEY (`proveedor`) REFERENCES `proveedores` (`idProveedor`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -267,6 +271,7 @@ CREATE TABLE `suministros` (
 
 LOCK TABLES `suministros` WRITE;
 /*!40000 ALTER TABLE `suministros` DISABLE KEYS */;
+INSERT INTO `suministros` VALUES (1,'Paleta del rotor',200,1),(2,'Cubo del rotor',550,1);
 /*!40000 ALTER TABLE `suministros` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -281,7 +286,7 @@ CREATE TABLE `tipohelicopteros` (
   `idTipoHelicoptero` int(11) NOT NULL AUTO_INCREMENT,
   `tipo` varchar(45) NOT NULL,
   PRIMARY KEY (`idTipoHelicoptero`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -290,7 +295,7 @@ CREATE TABLE `tipohelicopteros` (
 
 LOCK TABLES `tipohelicopteros` WRITE;
 /*!40000 ALTER TABLE `tipohelicopteros` DISABLE KEYS */;
-INSERT INTO `tipohelicopteros` VALUES (1,'ej');
+INSERT INTO `tipohelicopteros` VALUES (1,'Militar'),(2,'Privado'),(3,'Periodistico');
 /*!40000 ALTER TABLE `tipohelicopteros` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -305,7 +310,7 @@ CREATE TABLE `tipossolicitud` (
   `idTipoSolicitud` int(11) NOT NULL AUTO_INCREMENT,
   `tipo` varchar(45) NOT NULL,
   PRIMARY KEY (`idTipoSolicitud`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -314,7 +319,7 @@ CREATE TABLE `tipossolicitud` (
 
 LOCK TABLES `tipossolicitud` WRITE;
 /*!40000 ALTER TABLE `tipossolicitud` DISABLE KEYS */;
-INSERT INTO `tipossolicitud` VALUES (1,'reparación');
+INSERT INTO `tipossolicitud` VALUES (1,'mantenimiento'),(2,'reparación');
 /*!40000 ALTER TABLE `tipossolicitud` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -371,4 +376,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-31 21:49:40
+-- Dump completed on 2017-06-01 21:01:31
